@@ -1,0 +1,51 @@
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <script type="module" src="./index.js"></script>
+    <script type="module">
+      import {exportRubyFromPage, extractRubyFromPage} from './index.js'
+      exportRubyFromPage()
+    </script>
+  </head>
+  <body>
+    <h1>Ruby extracter example page</h1>
+    <div>
+      Check console log for results.
+    </div>
+    <div>
+      <h2>Example text</h2>
+      <div>
+        <h3>rb rt</h3>
+        <ruby>
+          <rb>🐹</rb>
+          <rt>ハムスター</rt>
+          <rp>Rubyに対応していない環境</rp>
+        </ruby>
+
+        <h3>No rb. Single rt.</h3>
+        <ruby>
+          英国<rt>イギリス</rt>
+        </ruby>
+
+        <h3><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/rb">1</a></h3>
+        <ruby>
+          <rb>漢<rb>字
+              <rp>(</rp>
+              <rt>kan
+              <rt>ji
+              <rp>)</rp>
+        </ruby>
+
+        <h3><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/rb">2</a></h3>
+        <ruby>
+          漢 <rp>(</rp>
+          <rt>Kan</rt>
+          <rp>)</rp>
+          字 <rp>(</rp>
+          <rt>ji</rt>
+          <rp>)</rp>
+        </ruby>
+      </div>
+    </div>
+  </body>
+</html>
