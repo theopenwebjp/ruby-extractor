@@ -5,6 +5,10 @@ Extracts information from ruby tags including the Katakana/hiragana AND the link
 
 ## Usage
 
+```bash
+npm install @theopenweb/ruby-extractor
+```
+
 ```js
 import { 
     extractReadableRubyFromPage,
