@@ -1,20 +1,30 @@
+<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8"/>
+    <title>Ruby extracter example page</title>
     <script type="module" src="./index.js"></script>
     <script type="module">
-      import {exportRubyFromPage, extractRubyFromPage} from './index.js'
-      exportRubyFromPage()
+      import {
+        extractReadableRubyFromPage,
+        extractRubyFromPage,
+        extractRubyFromElement,
+        extractFromRubyElement,
+        makeRubyDataListReadable
+      } from './index.js'
+      
+      // Data
+      document.querySelector('#output-data').textContent = JSON.stringify(extractRubyFromPage())
+
+      // Text
+      document.querySelector('#output-text').innerHTML = extractReadableRubyFromPage({ lf: '<br />' })
     </script>
   </head>
   <body>
     <h1>Ruby extracter example page</h1>
     <div>
-      Check console log for results.
-    </div>
-    <div>
       <h2>Example text</h2>
-      <div>
+      <div id="target">
         <h3>rb rt</h3>
         <ruby>
           <rb>🐹</rb>
@@ -45,6 +55,18 @@
           <rt>ji</rt>
           <rp>)</rp>
         </ruby>
+      </div>
+
+      <div>
+        <h2>Outputs</h2>
+        <div>
+          <h3>Data</h3>
+          <div id="output-data"></div>
+        </div>
+        <div>
+          <h3>Text</h3>
+          <div id="output-text"></div>
+        </div>
       </div>
     </div>
   </body>

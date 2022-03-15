@@ -1,0 +1,18 @@
+{
+  "name": "ruby-extracter",
+  "version": "1.0.0",
+  "description": "Ruby extraction library.\r Extracts information from ruby tags including the Katakana/hiragana AND the linked Japanese character(s).",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/goldingdamien/ruby-extracter.git"
+  },
+  "keywords": ["ruby", "japanese", "ルビ", "ルビー", "送り仮名"],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/goldingdamien/ruby-extracter/issues"
+  },
+  "homepage": "https://github.com/goldingdamien/ruby-extracter#readme"
+}

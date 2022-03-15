@@ -20,26 +20,9 @@ RB is not required. rt MUST be matched with rb(if not exist, uses text node befo
 
 Extracted ruby data then can be aggregated into a dictionary.
 
-// TODO: Currently 1 word per ruby is collected by joining all rt tags together. Test on real sites to see how websites usually use ruby tags and then reconsider spec.
+Currently 1 word per ruby is collected by joining all rt tags together.
+Test on real sites to see how websites usually use ruby tags and then reconsider spec.
 */
-
-/**
- * @public
- */
-export function exportRubyFromPage() {
-    var rubyList = extractRubyFromPage();
-    var data = serializeRubyList(rubyList);
-    console.log(data);
-}
-
-/**
- * @public
- */
-export function extractRubyFromPage() {
-    var rubyList = extractRubyFromElement(document.body);
-
-    return rubyList;
-}
 
 /**
  * @typedef {Object} RubyData
@@ -47,21 +30,39 @@ export function extractRubyFromPage() {
  * @property {string} ruby
  */
 
- /**
-  * @param {RubyData[]} list 
-  */
-function serializeRubyList(list){
-    return JSON.stringify(list);
+/**
+ * @typedef {Object} ReadableOptions
+ * @property {string} [lf] 
+ */
+
+/**
+ * Helper function for getting ruby data as readable text.
+ * @param {ReadableOptions} [options]
+ * @public
+ */
+export function extractReadableRubyFromPage(options = {}) {
+    const rubyDataList = extractRubyFromPage();
+    return makeRubyDataListReadable(rubyDataList, options);
 }
 
 /**
+ * Extracts ruby data from page.
+ * @public
+ */
+export function extractRubyFromPage() {
+    return extractRubyFromElement(document.body);
+}
+
+/**
+ * Extract ruby data from specified Element.
+ * @public
  * @param {HTMLElement} element 
  */
-function extractRubyFromElement(element){
+export function extractRubyFromElement(element){
     /**
      * @type { boolean | { str: string; ruby: string;}[]}
      */
-    var rubyList = [];
+    const rubyList = [];
 
     /*
     SPEC:
@@ -71,7 +72,7 @@ function extractRubyFromElement(element){
     */
     // TODO: rubyList.push(ruby);
     
-    var rubyEls = [...Array.from(element.querySelectorAll('ruby'))]
+    const rubyEls = [...Array.from(element.querySelectorAll('ruby'))]
     rubyEls.forEach(rubyEl => {
         const rubyData = extractFromRubyElement(rubyEl)
         rubyList.push(rubyData)
@@ -81,22 +82,35 @@ function extractRubyFromElement(element){
 }
 
 /**
+ * Extracts data from specified <rb> Ruby Element.
+ * @public
  * @param {HTMLElement} rubyEl 
  */
-function extractFromRubyElement(rubyEl) {
+export function extractFromRubyElement(rubyEl) {
     const rtList = Array.from(rubyEl.getElementsByTagName("rt"))
-    const rtText = rtList.map(rt => rt.textContent.trim()).join('')
+    const rtText = rtList.map(rt => (rt.textContent || '').trim()).join('')
 
-    //Ruby data object
+    // Ruby data object
     /**
      * @type {RubyData}
      */
-    var ruby = {
+     const ruby = {
         str: getRubyBaseText(rubyEl),
         ruby: rtText
     };
 
     return ruby;
+}
+
+/**
+ * For testing and display purposes.
+ * @param {RubyData[]} rubyDataList
+ * @param {ReadableOptions} [options]
+ */
+export function makeRubyDataListReadable(rubyDataList, options = {}) {
+    const lf = options.lf || '\n\r'
+    const formatRubyData = /** @param {RubyData} d */ (d) => `${d.str}: ${d.ruby}`
+    return rubyDataList.map(i => formatRubyData(i)).join(lf)
 }
 
 /**
@@ -109,16 +123,16 @@ function getRubyBaseText(rubyEl){
     rb or text
     */
     
-    var text = "";
+    let text = "";
     
-    //Text
-    var normalText = getNonNestedElementText(rubyEl);
+    // Text
+    const normalText = getNonNestedElementText(rubyEl);
     text+= normalText;
     
-    //Rb
-    var rbList = rubyEl.getElementsByTagName("rb");
+    // Rb
+    const rbList = rubyEl.getElementsByTagName("rb");
     for(let i=0; i<rbList.length; i++){
-        text+= rbList[i].textContent.trim();
+        text+= (rbList[i].textContent || '').trim();
     }
     
     return text;
@@ -128,11 +142,11 @@ function getRubyBaseText(rubyEl){
  * @param {HTMLElement} element
  */
 function getNonNestedElementText(element){
-    var textNodes = getElementTextNodes(element);
-    var text = "";
+    const textNodes = getElementTextNodes(element);
+    let text = "";
     
-    for(var i=0; i<textNodes.length; i++){
-        text+= textNodes[i].textContent.trim();
+    for(let i=0; i<textNodes.length; i++){
+        text+= (textNodes[i].textContent || '').trim();
     }
     
     return text;
@@ -142,11 +156,11 @@ function getNonNestedElementText(element){
  * @param {HTMLElement} element
  */
 function getElementTextNodes(element){
-    var nodes = element.childNodes;
-    var node;
-    var textNodes = [];
+    const nodes = element.childNodes;
+    let node;
+    const textNodes = [];
     
-    for(var i=0; i<nodes.length; i++){
+    for(let i=0; i<nodes.length; i++){
         node = nodes[i];
         
         if(node.nodeType === Node.TEXT_NODE){
@@ -158,14 +172,15 @@ function getElementTextNodes(element){
 }
 
 /**
+ * TODO: Not used. Utilize OR move.
  * @param {HTMLElement} element 
  * @param {string} tagName 
  */
 function getShallowElementsByTagName(element, tagName) {
-    var childElements = element.children;
-    var returnElements = [];
+    const childElements = element.children;
+    const returnElements = [];
 
-    for (var i = 0; i < childElements.length; i++) {
+    for (let i = 0; i < childElements.length; i++) {
         if (childElements[i].tagName.toLowerCase() === tagName.toLowerCase()) {
             returnElements.push(childElements[i]);
         }
