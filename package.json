@@ -1,5 +1,5 @@
 {
-  "name": "ruby-extractor",
+  "name": "@theopenweb/ruby-extractor",
   "version": "1.0.0",
   "description": "Ruby extraction library.\r Extracts information from ruby tags including the Katakana/hiragana AND the linked Japanese character(s).",
   "main": "index.js",
